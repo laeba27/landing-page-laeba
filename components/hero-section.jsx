@@ -2,10 +2,18 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { AnimatedText } from "./animated-text"
+import { motion } from "framer-motion"
+import { useTheme } from "next-themes"
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [mounted, setMounted] = useState(false)
+  const { theme } = useTheme()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -52,24 +60,39 @@ export function HeroSection() {
   const borderRadius = easeOutCubic(scrollProgress) * 48
   const heightVh = 100 - easeOutQuad(scrollProgress) * 37.5
 
+  const backgroundImage = mounted && theme === "dark" ? "/images/hero-night-bg.png" : "/images/hero-bg.png"
+
   return (
     <section className="pt-32 pb-12 px-6 min-h-screen flex items-center relative overflow-hidden">
-      <div className="absolute inset-0 top-0">
+      <div className="absolute inset-0 top-0 z-0">
         <div
           className="w-full will-change-transform overflow-hidden"
           style={{
             transform: `scale(${scale})`,
             borderRadius: `${borderRadius}px`,
             height: `${heightVh}vh`,
+            position: "relative",
+            backfaceVisibility: "hidden",
           }}
         >
-          <Image
-            src="/images/hero-bg.png"
-            alt="Hero background"
-            fill
-            className="object-cover"
-            priority
-          />
+          <motion.div
+            key={backgroundImage}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={backgroundImage}
+              alt="Hero background"
+              fill
+              className="object-cover object-center"
+              priority
+              sizes="100vw"
+              quality={85}
+            />
+          </motion.div>
         </div>
       </div>
 
@@ -94,9 +117,15 @@ export function HeroSection() {
           <div
             className={`transition-all duration-1000 delay-[800ms] ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}`}
           >
-            <h1 className="font-serif text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] 2xl:text-[8.5rem] font-normal leading-tight mb-6 w-full px-4 max-w-6xl mx-auto text-balance">
+            <motion.h1 
+              className="font-serif text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[7.5rem] 2xl:text-[8.5rem] font-normal leading-tight mb-6 w-full px-4 max-w-6xl mx-auto text-balance transition-colors duration-800"
+              style={{
+                color: mounted && theme === "dark" ? "#ffffff" : "#1a1a1a",
+                textShadow: mounted && theme === "dark" ? "0 2px 8px rgba(0, 0, 0, 0.3)" : "none"
+              }}
+            >
               <AnimatedText text="Find your home away from home" delay={0.3} />
-            </h1>
+            </motion.h1>
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Menu, X, ArrowUpRight, ArrowRight } from "lucide-react"
+import { ThemeToggle } from "./theme-toggle"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -108,7 +109,8 @@ export function Header() {
             </a>
           </nav>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <button
               className={`relative flex items-center gap-0 border rounded-full pl-5 pr-1 py-1 transition-all duration-300 group overflow-hidden ${
                 isScrolled ? "border-zinc-300" : "border-border"

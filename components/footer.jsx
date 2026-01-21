@@ -175,7 +175,7 @@ export function Footer() {
 
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-muted-foreground">
-              © 2026 Homie. All rights reserved.
+              © 2026 Homie. All rights reserved. Made ♥ by Laeba Firdous.
             </p>
             <p className="text-xs text-muted-foreground">
               Homie Inc. - Registered real estate agent
